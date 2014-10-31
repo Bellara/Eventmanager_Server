@@ -1,0 +1,231 @@
+****************************************
+*  Definition der REST Schnittstelle   *
+*   	für den Eventmanager           *
+****************************************
+
+1. Allgemeiner Erklaerung der Kommunikation
+	- Server: Apache HTTPd (MySQL Datenbank)
+
+	Client fragt über spezielle URLs Daten vom
+	Server ab. Server verarbeitet die Anfrage
+	und bastelt aus den angeforderten Daten
+	ein JSON Object. Dieses wird mit einem
+	HTTP Response an den Client zurückgegeben.
+
+	Diese Responses haben alle (unabhängig von)
+	der angeforderten URL ein festes Schema:
+
+	{
+		"result":{
+				"status": entweder "success" oder "error",
+				"message": "..einen String, falls etwas schief lief ..."
+		},
+
+		"data": { ... DATEN (Anfrage abhängig) ... }
+	}
+
+	Die einzelnen Funktionen sollen in etwa folgendermassen aufgebaut sein:
+
+2. Funktionen
+
+2.1 Login des Users
+	- URL: http://server/user/login?mail=test@test.de&pw=blabla
+
+	- Antwort: (In der "data" Sektion befindet sicht ein User Objekt)
+	{
+		"result": {
+			"status":"success",
+			"message":""
+	    },
+
+		"data":  {
+			"id":"1234567",
+			"name": "Breuersbrock",
+			"vorname": "Henning",
+			"mail": "test@test.de"
+		}
+	}
+
+2.2 Anfrage aller User
+	- URL: http://server/user/getAll
+
+	- Antwort: (In der "data" Sektion befindet sich ein Array aller Userobjekte)
+	{
+		"result": {
+			"status":"success",
+			"message":""
+	    },
+
+		"data": {
+			"users": [
+				{
+					"id":"1234567",
+					"name": "Breuersbrock",
+					"vorname": "Henning",
+					"mail": "test@test.de"
+				},
+				{
+					"id":"1234567",
+					"name": "Breuersbrock",
+					"vorname": "Henning",
+					"mail": "test@test.de"
+				},
+				.
+				.
+				.
+
+			]
+		}
+	}
+
+2.3 Anfrage aller Einladungen auf die noch nicht geantwortet wurde
+	- URL: http://server/events/getInvitations?uid=123456
+
+	- Antwort: (In der "data" Sektion befindet sich ein Array aller Einladungen des Users)
+	{
+		"result": {
+			"status":"success",
+			"message":""
+	    },
+
+		"data": {
+			"invitations": [
+				{
+					"event": {
+						"eid":"123456",
+						"bezeichnung":"asdfasdf",
+						"ort":"sfasdf",
+						"zeit":"2014-15-11 20:00",
+						"admin": {
+    						"id":"1234567",
+						    "name": "Breuersbrock",
+						    "vorname": "Henning",
+						    "mail": "test@test.de",
+						}
+					}
+				"status": "0" / "1" / "2"  (0=nicht entschieden, 1=komme, 2=komme nicht)
+				},
+				{
+					"event": {
+						"eid":"123456",
+						"bezeichnung":"asdfasdf",
+						"ort":"sfasdf",
+						"zeit":"2014-15-11 20:00",
+						"admin": {
+    						"id":"1234567",
+						    "name": "Breuersbrock",
+						    "vorname": "Henning",
+						    "mail": "test@test.de",
+						}
+					}
+				"status": "0" / "1" / "2"  (0=nicht entschieden, 1=komme, 2=komme nicht)
+				}
+
+			]
+		}
+	}
+
+2.4 Anfrage Detail Informationen eines Events
+	- URL: http://server/events/getById?id=123456
+
+	- Antwort: (In der "data" Sektion steht ein Event Objekt)
+	{
+		"result": {
+			"status":"success",
+			"message":""
+	    },
+
+		"data":  {
+			"eid":"123456",
+			"bezeichnung":"asdfasdf",
+			"ort":"sfasdf",
+			"zeit":"2014-15-11 20:00",
+			"admin": {
+				"id":"1234567",
+				"name": "Breuersbrock",
+				"vorname": "Henning",
+				"mail": "test@test.de",
+			}
+		}
+	}
+
+2.5 Einladen eines Benutzers zu einem Event
+	- URL: http://server/events/invite?eid=1234&uid=1234&aid=12345
+
+	- Antwort: (Lediglich eine Benachrichtigung über Erfolg/Misserfolg)
+	{
+		"result": {
+			"status":"success"
+			"message":""
+	    },
+
+		"data":  { }
+	}
+
+2.6 Anlegen eines neuen Events
+	- URL http://server/events/create?aid=548&time=YYYY-MM-DD_HH:MM&bz=Geb-Party&Ort=Bocholt
+
+	- Antwort: (Rückgabe des Event-Objekts)
+	{
+		"result": {
+			"status":"success",
+			"message":""
+	    },
+
+		"data":  {
+			"eid":"123456",
+			"bezeichnung":"asdfasdf",
+			"ort":"sfasdf",
+			"zeit":"2014-15-11 20:00",
+			"admin": {
+				"id":"1234567",
+				"name": "Breuersbrock",
+				"vorname": "Henning",
+				"mail": "test@test.de",
+			}
+		}
+	}
+
+2.7 Loeschen eines Events
+	- URL http://server/events/delete?aid=1515&eid=123123
+
+	- Antwort: (Lediglich eine Benachrichtigung über Erfolg/Misserfolg)
+	{
+		"result": {
+			"status":"success"
+			"message":""
+	    },
+
+		"data":  { }
+	}
+
+2.8 Für ein Event anmelden oder absagen
+	- URL http://server/events/signin?eid=123123&uid=12123&status=1/2
+
+	- Antwort: (Lediglich eine Benachrichtigung über Erfolg/Misserfolg)
+	{
+		"result": {
+			"status":"success"
+			"message":""
+	    },
+
+		"data":  { }
+	}
+
+2.9 Registrieren
+	- URL http://server/user/register?mail=sdfsf&name=sdfskdf&vorname=wesddf&passwort=65654
+
+	Antwort: (User Objekt in der "data" Sektion)
+	{
+		"result": {
+			"status":"success",
+			"message":""
+	    },
+
+		"data":  {
+			"id":"1234567",
+			"name": "Breuersbrock",
+			"vorname": "Henning",
+			"mail": "test@test.de"
+		}
+	}
