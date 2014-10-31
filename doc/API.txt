@@ -12,8 +12,8 @@
 	ein JSON Object. Dieses wird mit einem
 	HTTP Response an den Client zurückgegeben.
 
-	Diese Responses haben alle (unabhängig von)
-	der angeforderten URL ein festes Schema:
+	Diese Responses haben alle (unabhängig von
+	der angeforderten URL) ein festes Schema:
 
 	{
 		"result":{
