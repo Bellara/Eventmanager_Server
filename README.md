@@ -1,4 +1,4 @@
-Eventmanager_Server
+Eventmanager-Server
 ===================
 
 Repository für den Eventmanager-Server..
