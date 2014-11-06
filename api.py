@@ -7,5 +7,9 @@ app = Flask(__name__)
 def hello():
     return "Test erfolgreich!"
 
+@app.route("/Test2")
+def test_t():
+    return "Zweiter Test!"
+
 if __name__ == "__main__":
     app.run()
