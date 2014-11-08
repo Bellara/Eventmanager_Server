@@ -1,15 +1,80 @@
 __author__ = 'Henning'
 
 from flask import Flask
+from flask import request
+from JSONResponse import JSONResponse
+
 app = Flask(__name__)
 
-@app.route("/Test")
-def hello():
-    return "Test erfolgreich!"
+@app.route("/user/login")
+def user_login():
+    #TODO impl
+    resp = JSONResponse(True, data={"Mein Test": "Rueckgabe"})
+    return resp.getFinished()
 
-@app.route("/Test2")
-def test_t():
-    return "Zweiter Test!"
+
+@app.route("/user/getAll")
+def user_getAll():
+    #TODO impl
+    return "works"
+
+
+@app.route("/events/getInvitations")
+def events_getInvitations():
+    #TODO impl
+    return "works"
+
+
+@app.route("/events/getById")
+def events_getById():
+    #TODO impl
+    return "works"
+
+
+@app.route("/events/invite")
+def events_inivite():
+    #TODO impl
+    return "works"
+
+@app.route("/events/create")
+def events_create():
+    #TODO impl
+    return "works"
+
+
+@app.route("/events/delete")
+def events_delete():
+    #TODO impl
+    return "works"
+
+
+@app.route("/events/signin")
+def events_signin():
+    #TODO impl
+    return "works"
+
+
+@app.route("/user/register")
+def user_register():
+    #TODO impl
+    return "works"
+
+
+def getUrlParamsAsDict(argv):
+    """
+
+    :param argv:
+    :return: :raise Exception:
+    """
+    ret = {}
+
+    for arg in argv:
+        try:
+            ret[arg] = request.args.get(arg)
+        except Exception:
+            raise Exception("Argument '{}' nicht gefunden!".format(arg))
+
+    return ret
 
 if __name__ == "__main__":
     app.run()
