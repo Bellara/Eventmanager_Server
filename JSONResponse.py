@@ -35,4 +35,3 @@ class JSONResponse():
         else:
             return Response(response=json.dumps({"result": {"status": "error", "message": self.message}, "data": {}}),
                             mimetype=JSONResponse.JSON_MIMETYPE)
-

@@ -4,6 +4,8 @@ from flask import Flask
 from flask import request
 from JSONResponse import JSONResponse
 
+from Server.Password import Password
+
 app = Flask(__name__)
 
 @app.route("/user/login")
@@ -61,11 +63,6 @@ def user_register():
 
 
 def getUrlParamsAsDict(argv):
-    """
-
-    :param argv:
-    :return: :raise Exception:
-    """
     ret = {}
 
     for arg in argv:
