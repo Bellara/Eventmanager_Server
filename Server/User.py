@@ -45,7 +45,7 @@ class User:
         #benutzer anlegen
         return
 
-    def getasdict(self, attr=[]):
+    def getAsDict(self, attr=[]):
         ret = {}
 
         if len(attr) == 0:
