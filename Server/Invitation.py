@@ -44,3 +44,8 @@ class Invitation:
     def getAllFromUser(user):
         #SQL abfrage
         pass
+
+    def getAsDict(self, attr=[]):
+
+        if len(attr) == 0:
+            attr=[]

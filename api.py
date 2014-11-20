@@ -4,8 +4,6 @@ from flask import Flask
 from flask import request
 from JSONResponse import JSONResponse
 
-from Server.Password import Password
-
 app = Flask(__name__)
 
 @app.route("/user/login")
