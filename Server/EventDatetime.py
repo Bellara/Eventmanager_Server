@@ -1,6 +1,6 @@
 __author__ = 'Henning'
 
-import datetime.datetime as dt
+import datetime as dt
 
 class EventDatetime():
 
@@ -10,7 +10,7 @@ class EventDatetime():
         self.d = d
 
     def fromString(self, s):
-        self.d = dt.strptime(s)
+        self.d = dt.datetime.strptime(s, EventDatetime.DATETIME_STRFORMAT)
 
     def getDatetime(self):
         return self.d

@@ -1,2 +1,2 @@
 del /F /Q S:\*
-xcopy * S:\ /S
+xcopy * S:\ /S /F

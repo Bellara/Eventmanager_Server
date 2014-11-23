@@ -1,6 +1,3 @@
-from _ast import In
-from Server import Invitation, Invitation
-
 __author__ = 'Henning'
 
 from User import User
@@ -23,7 +20,12 @@ class Server():
         :param pw: Passwort des einzuloggenden users
         :return: Das entsprechende User Objekt als Dictionary
         """
-        pass
+        user = User.getByMail(mail)
+
+        if user.login(pw):
+            return user.getAsDict()
+        else:
+            raise EventError(EventError.WRONG_PASSWORD)
 
     def getAllUsers(self):
         """
@@ -31,7 +33,14 @@ class Server():
 
         :return: Array aus Dictionaries der User Objekte
         """
-        pass
+        ret = []
+
+        users = User.getAll()
+
+        for e in users:
+            ret.append(e.getAsDict())
+
+        return ret
 
     def getInvitations(self, userid):
         """
@@ -42,6 +51,16 @@ class Server():
         :return: Array aus Dicts aller Einladungen
         """
 
+        ret = []
+
+        user = User.getById(userid)
+        invitations = Invitation.getAllFromUser(user)
+
+        for e in invitations:
+            ret.append(e.getAsDict())
+
+        return ret
+
     def getEventById(self, eventid):
         """
         Methode zur Rueckgabe aller Informationen eines
@@ -51,6 +70,9 @@ class Server():
         :return: Alle Informationen eines Events in Form eines
         Dictionaries
         """
+
+        event = Event.getById(eventid)
+        return event.getAsDict()
 
     def createEvent(self, aid, time, bz, location):
         """

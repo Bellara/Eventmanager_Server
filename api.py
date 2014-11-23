@@ -3,13 +3,29 @@ __author__ = 'Henning'
 from flask import Flask
 from flask import request
 from JSONResponse import JSONResponse
+from Server.Server import Server
+from Server.EventError import EventError
 
 app = Flask(__name__)
 
 @app.route("/user/login")
 def user_login():
-    #TODO impl
-    resp = JSONResponse(True, data={"Mein Test": "Rueckgabe"})
+    resp = JSONResponse()
+    try:
+        mail = request.args.get("mail")
+        pw = request.args.get("pw")
+
+        server = Server()
+        data = server.userLogin(mail, pw)
+
+        resp.setSuccess(data)
+
+    except EventError as e:
+        resp.setError(str(e))
+
+    except Exception as e:
+        resp.setError("Unbekannter Fehler")
+
     return resp.getFinished()
 
 

@@ -31,7 +31,7 @@ class Event:
         pass
 
     def create(self):
-        #aktuelle Parameter prüfen
+        #aktuelle Parameter pruefen
 
         #in die Datenbank einpflegen.
         pass

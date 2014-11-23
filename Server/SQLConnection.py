@@ -1,7 +1,7 @@
 from globals import CONFIG_PATH
 import ConfigParser
 import mysql.connector
-from Server.EventError import EventError
+from EventError import EventError
 
 
 class SQLConnection():
