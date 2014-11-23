@@ -1,4 +1,13 @@
+from _ast import In
+from Server import Invitation, Invitation
+
 __author__ = 'Henning'
+
+from User import User
+from Event import Event
+from Invitation import Invitation
+from EventError import EventError
+from EventDatetime import EventDatetime
 
 class Server():
     """
@@ -54,6 +63,23 @@ class Server():
         :return: Event Objekt als Dictionary
         """
 
+        event = Event()
+
+        admin = User.getById(aid)
+        event.admin = admin
+
+        date = EventDatetime()
+        date.fromString(time)
+
+        event.description = bz
+
+        event.location = location
+
+        event.create()
+
+        return event.getAsDict()
+
+
     def deleteEvent(self, eventid):
         """
         Methode zur Loeschung eines Events
@@ -61,6 +87,11 @@ class Server():
         :param eventid: ID des Events, welches geloescht werden soll.
         :return: -
         """
+
+        event = Event.getById()
+        event.delete()
+
+        return
 
     def invite(self, eventid, aid, uid):
         """
@@ -72,6 +103,17 @@ class Server():
         :return: -
         """
 
+        event = Event.getById(eventid)
+        if not event.isAdmin(aid):
+            raise EventError(EventError.NO_ADMIN)
+
+        user = User.getById()
+
+        invitation = Invitation(user=user, event=event)
+        invitation.create() #TODO Methode zum Speichern der Einladung
+
+        return
+
     def registerUser(self, mail, name, vorname, pw):
         """
         Methode zur Registration eines neuen Users.
@@ -82,6 +124,15 @@ class Server():
         :param pw: Passwort des neuen Users
         :return: User Objekt als Dictionary
         """
+        newuser = User()
+        newuser.setMail(mail) #TODO Methoden anlegen, damit Pruefungen stattfinden koennen.
+        newuser.setName(name)
+        newuser.setVorname(vorname)
+        newuser.setPw(pw)
+
+        newuser.register()
+
+        return newuser.getAsDict()
 
     def signin(self, eventid, userid, status):
         """
@@ -92,6 +143,22 @@ class Server():
         :param status: neuer Status
         :return:  -
         """
+        user = User.getById(userid)
+        event = Event.getById(eventid)
+
+        invitation = Invitation.getFromUserAndEvent(user, event)
+
+        if status == Invitation.YES:
+            invitation.signin()
+        elif status == Invitation.NO:
+            invitation.notcoming()
+        else:
+            #Niemand wird ein Anfrage senden um zu sagen, dass er sich noch nicht entschschieden hat.
+            pass
+
+        return
+
+
 
 
 

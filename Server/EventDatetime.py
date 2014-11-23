@@ -12,5 +12,8 @@ class EventDatetime():
     def fromString(self, s):
         self.d = dt.strptime(s)
 
+    def getDatetime(self):
+        return self.d
+
     def __str__(self):
         return self.d.strftime(EventDatetime.DATETIME_STRFORMAT)

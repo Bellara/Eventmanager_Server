@@ -11,7 +11,7 @@ class Invitation:
     YES = 1
     NO = 2
 
-    def __init__(self, id=None, user=None, event=None, status=None):
+    def __init__(self, id=None, user=None, event=None, status=UNDECIDED):
         self.id = id
         self.user = user
         self.event = event
