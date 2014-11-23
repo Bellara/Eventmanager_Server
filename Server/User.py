@@ -34,7 +34,7 @@ class User:
             user.setName(str(e[3]))
             user.setVorname(str(e[4]))
 
-            ret.append(e)
+            ret.append(user)
 
         return ret
 

@@ -31,8 +31,20 @@ def user_login():
 
 @app.route("/user/getAll")
 def user_getAll():
-    #TODO impl
-    return "works"
+    resp = JSONResponse()
+    try:
+        server = Server()
+        data = server.getAllUsers()
+
+        resp.setSuccess(data)
+
+    except EventError as e:
+        resp.setError(str(e))
+
+    except Exception as e:
+        resp.setError(str(e))
+
+    return resp.getFinished()
 
 
 @app.route("/events/getInvitations")
