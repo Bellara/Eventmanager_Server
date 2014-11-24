@@ -1,16 +1,20 @@
 __author__ = 'Henning'
 
 import datetime as dt
+from EventError import EventError
 
 class EventDatetime():
 
-    DATETIME_STRFORMAT = "%Y-%d-%m %H:%M"
+    DATETIME_STRFORMAT = "%Y-%m-%d %H:%M"
 
     def __init__(self, d=None):
         self.d = d
 
     def fromString(self, s):
-        self.d = dt.datetime.strptime(s, EventDatetime.DATETIME_STRFORMAT)
+        try:
+            self.d = dt.datetime.strptime(s, EventDatetime.DATETIME_STRFORMAT)
+        except:
+            raise EventError(EventError.WRONG_DATE_FORMAT)
 
     def getDatetime(self):
         return self.d

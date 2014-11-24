@@ -1,4 +1,4 @@
-from globals import CONFIG_PATH
+from globals import *
 import ConfigParser
 import mysql.connector
 from EventError import EventError
@@ -18,8 +18,11 @@ class SQLConnection():
             self.dbip = config.get(SQLConnection.CONFIG_SECTION, "ip")
             self.dbport = config.get(SQLConnection.CONFIG_SECTION, "port")
             self.dbname = config.get(SQLConnection.CONFIG_SECTION, "db")
-        except ConfigParser.Error():
-            raise Exception("Probleme beim Laden der Datenbankeinstellungen!")
+        except ConfigParser.Error() as e:
+            if DEBUG:
+                raise EventError(str(e))
+            else:
+                raise EventError(EventError.CONFIG_PROBLEMS)
 
         try:
             self.dbconn = mysql.connector.connect(user=self.dbuser,
@@ -27,8 +30,11 @@ class SQLConnection():
                                                   database=self.dbname
                                                   )
             mysql.connector.connect()
-        except Exception:
-            raise EventError("Probleme beim Hersellen der Datenbankverbindung")
+        except Exception as e:
+            if DEBUG:
+                raise EventError(str(e))
+            else:
+                raise EventError("Probleme beim Hersellen der Datenbankverbindung")
 
         return
 
@@ -98,7 +104,10 @@ class SQLConnection():
             c.close()
         except Exception as e:
             c.close()
-            raise EventError(str(e))
+            if DEBUG:
+                raise EventError(str(e))
+            else:
+                raise EventError(EventError.DB_DATA_PROBLEMS)
 
         return ret
 

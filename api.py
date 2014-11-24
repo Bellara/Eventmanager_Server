@@ -2,6 +2,7 @@ __author__ = 'Henning'
 
 from flask import Flask
 from flask import request
+from globals import DEBUG
 from JSONResponse import JSONResponse
 from Server.Server import Server
 from Server.EventError import EventError
@@ -75,7 +76,10 @@ def events_getById():
         resp.setError(str(e))
 
     except Exception as e:
-        resp.setError(EventError.UNDEFINED)
+        if DEBUG:
+            resp.setError(str(e))
+        else:
+            resp.setError(EventError.UNDEFINED)
 
     return resp.getFinished()
 
@@ -87,14 +91,62 @@ def events_inivite():
 
 @app.route("/events/create")
 def events_create():
-    #TODO impl
-    return "works"
+    resp = JSONResponse()
+
+    try:
+        admin_id = str(request.args.get("aid"))
+        time = str(request.args.get("time"))
+        time = time.replace("_", " ")
+        bz = str(request.args.get("bz"))
+        location = str(request.args.get("Ort"))
+
+        if admin_id is None or time is None or bz is None or location is None:
+            raise EventError(EventError.ARGUMENT_ERROR)
+
+        server = Server()
+        data = server.createEvent(admin_id, time, bz, location)
+
+        resp.setSuccess(data)
+
+    except EventError as e:
+        resp.setError(str(e))
+
+    except Exception as e:
+        if DEBUG:
+            resp.setError(str(e))
+        else:
+            resp.setError(EventError.UNDEFINED)
+
+    return resp.getFinished()
 
 
 @app.route("/events/delete")
 def events_delete():
-    #TODO impl
-    return "works"
+    resp = JSONResponse()
+
+    try:
+        eid = str(request.args.get("eid"))
+        aid = str(request.args.get("aid"))
+
+        if eid is None or aid is None:
+            raise EventError(EventError.ARGUMENT_ERROR)
+
+        server = Server()
+        server.deleteEvent(aid, eid)
+
+        resp.setSuccess()
+
+    except EventError as e:
+        resp.setError(str(e))
+
+    except Exception as e:
+        if DEBUG:
+            resp.setError(str(e))
+        else:
+            resp.setError(EventError.UNDEFINED)
+
+    return resp.getFinished()
+
 
 
 @app.route("/events/signin")
@@ -129,17 +181,6 @@ def user_register():
 
     return resp.getFinished()
 
-
-def getUrlParamsAsDict(argv):
-    ret = {}
-
-    for arg in argv:
-        try:
-            ret[arg] = request.args.get(arg)
-        except Exception:
-            raise Exception("Argument '{}' nicht gefunden!".format(arg))
-
-    return ret
 
 if __name__ == "__main__":
     app.run()

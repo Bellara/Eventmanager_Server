@@ -11,4 +11,8 @@ class EventError(Exception):
     WRONG_PASSWORD = "Falsches Passwort"
     ARGUMENT_ERROR = "Fehler bei den Parametern!"
     UNDEFINED = "Unbekannter Fehler"
+    CONFIG_PROBLEMS = "Probleme beim Laden der Serverkonfiguration"
+    NO_EVENT_FOUND = "Kein Event gefunden!"
+    WRONG_DATE_FORMAT = "Falsches Format beim Datum gefunden!"
+    USER_NOT_AUTHORIZED = "Der Benutzer ist nicht autorisiert, diese Aktion auszufuehren"
     pass

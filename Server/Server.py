@@ -92,6 +92,7 @@ class Server():
 
         date = EventDatetime()
         date.fromString(time)
+        event.datetime = date
 
         event.description = bz
 
@@ -102,15 +103,19 @@ class Server():
         return event.getAsDict()
 
 
-    def deleteEvent(self, eventid):
+    def deleteEvent(self, aid, eventid):
         """
         Methode zur Loeschung eines Events
 
         :param eventid: ID des Events, welches geloescht werden soll.
+        :param aid: ID des Admins des Events um nur dem Admin zu erlauben sein Event zu loeschen.
         :return: -
         """
 
-        event = Event.getById()
+        event = Event.getById(eventid)
+        if not event.authorized(aid):
+            raise EventError(EventError.USER_NOT_AUTHORIZED)
+
         event.delete()
 
         return
