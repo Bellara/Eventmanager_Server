@@ -43,9 +43,9 @@ class SQLConnection():
             for e in c:
                 data.append(e)
             c.close()
-        except Exception:
+        except Exception as e:
             c.close()
-            raise EventError(EventError.DB_DATA_PROBLEMS)
+            raise EventError(str(e))
 
         return data
 
@@ -66,9 +66,9 @@ class SQLConnection():
             self.dbconn.commit()
             c.close()
 
-        except Exception:
+        except Exception as e:
             c.close()
-            raise EventError(EventError.DB_DATA_PROBLEMS)
+            raise EventError(str(e))
 
         return rid
 
@@ -98,7 +98,7 @@ class SQLConnection():
             c.close()
         except Exception as e:
             c.close()
-            raise EventError(EventError.DB_DATA_PROBLEMS)
+            raise EventError(str(e))
 
         return ret
 

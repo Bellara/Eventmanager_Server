@@ -9,4 +9,6 @@ class EventError(Exception):
     INVALID_PASSWORD = "Passwort muss mindestens fuenf Zeichen lange sein"
     USER_ALREADY_EXISTING = "Ein Benutzer mit der Mail Adresse exisiter bereits"
     WRONG_PASSWORD = "Falsches Passwort"
+    ARGUMENT_ERROR = "Fehler bei den Parametern!"
+    UNDEFINED = "Unbekannter Fehler"
     pass

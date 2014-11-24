@@ -150,7 +150,7 @@ class Server():
         newuser.setMail(mail) #TODO Methoden anlegen, damit Pruefungen stattfinden koennen.
         newuser.setName(name)
         newuser.setVorname(vorname)
-        newuser.setPw(pw)
+        newuser.setPassword(pw)
 
         newuser.register()
 

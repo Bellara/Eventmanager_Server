@@ -15,6 +15,9 @@ def user_login():
         mail = request.args.get("mail")
         pw = request.args.get("pw")
 
+        if mail is None or pw is None:
+            raise EventError(EventError.ARGUMENT_ERROR)
+
         server = Server()
         data = server.userLogin(mail, pw)
 
@@ -24,7 +27,7 @@ def user_login():
         resp.setError(str(e))
 
     except Exception as e:
-        resp.setError("Unbekannter Fehler")
+        resp.setError(EventError.UNDEFINED)
 
     return resp.getFinished()
 
@@ -42,7 +45,7 @@ def user_getAll():
         resp.setError(str(e))
 
     except Exception as e:
-        resp.setError(str(e))
+        resp.setError(EventError.UNDEFINED)
 
     return resp.getFinished()
 
@@ -55,8 +58,26 @@ def events_getInvitations():
 
 @app.route("/events/getById")
 def events_getById():
-    #TODO impl
-    return "works"
+    resp = JSONResponse()
+
+    try:
+        id = str(request.args.get("id"))
+
+        if id is None:
+            raise EventError(EventError.ARGUMENT_ERROR)
+
+        server = Server()
+        data = server.getEventById(id)
+
+        resp.setSuccess(data)
+
+    except EventError as e:
+        resp.setError(str(e))
+
+    except Exception as e:
+        resp.setError(EventError.UNDEFINED)
+
+    return resp.getFinished()
 
 
 @app.route("/events/invite")
@@ -84,8 +105,29 @@ def events_signin():
 
 @app.route("/user/register")
 def user_register():
-    #TODO impl
-    return "works"
+    resp = JSONResponse()
+
+    try:
+        mail = str(request.args.get("mail"))
+        pw = str(request.args.get("passwort"))
+        name = str(request.args.get("name"))
+        vorname = str(request.args.get("vorname"))
+
+        if mail is None or pw is None or name is None or vorname is None:
+            raise EventError(EventError.ARGUMENT_ERROR)
+
+        server = Server()
+        data = server.registerUser(mail, name, vorname, pw)
+
+        resp.setSuccess(data)
+
+    except EventError as e:
+        resp.setError(str(e))
+
+    except Exception as e:
+        resp.setError(EventError.UNDEFINED)
+
+    return resp.getFinished()
 
 
 def getUrlParamsAsDict(argv):

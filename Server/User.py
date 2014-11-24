@@ -78,7 +78,7 @@ class User:
 
         #benutzer anlegen
             id = db.insert("INSERT INTO user (mail, pw, name, vorname) VALUES (%s,%s,%s,%s)", (self.mail,
-                                                                                          self.pw.getHash,
+                                                                                          self.pw.getHash(),
                                                                                           self.name,
                                                                                           self.vorname))
             self.id = id
