@@ -56,6 +56,7 @@ class SQLConnection():
         return data
 
     def update(self, q, args):
+        #TODO Noch implementieren... Wichtig fuer die Aktualisierung von Einladungen...
         c = self._getcursor()
         if c is None:
             raise EventError(EventError.DB_PROBLEMS)
