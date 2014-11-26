@@ -113,7 +113,8 @@ class Server():
         """
 
         event = Event.getById(eventid)
-        if not event.authorized(aid):
+        user = User(id=aid)
+        if not event.authorized(user):
             raise EventError(EventError.USER_NOT_AUTHORIZED)
 
         event.delete()

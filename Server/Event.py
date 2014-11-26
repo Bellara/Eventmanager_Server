@@ -112,7 +112,7 @@ class Event:
         #Einladung pullen bei der eid = self.id und uid = self.uid
         pass
 
-    def authorized(self, aid):
+    def authorized(self, user):
         """
         Methode zur Ueberpruefeng, ob ein User Admin des Events ist.
 
@@ -120,4 +120,4 @@ class Event:
         :return: True: User(aid) ist Admin. False: User(aid) ist kein Admin
         """
 
-        return self.admin.id == aid
+        return self.admin.id == user.id
