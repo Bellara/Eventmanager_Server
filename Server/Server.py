@@ -6,6 +6,7 @@ from Invitation import Invitation
 from EventError import EventError
 from EventDatetime import EventDatetime
 
+
 class Server():
     """
     Hautpserverklasse zur Verarbeitung der Anfragen.
@@ -44,8 +45,7 @@ class Server():
 
     def getInvitations(self, userid):
         """
-        Methoe zur Rueckgabe aller Einladungen eines Benutzers,
-        auf die noch nicht geantwort wurde.
+        Methoe zur Rueckgabe aller Einladungen eines Benutzers.
 
         :param userid: ID des Benutzers
         :return: Array aus Dicts aller Einladungen
@@ -57,9 +57,18 @@ class Server():
         invitations = Invitation.getAllFromUser(user)
 
         for e in invitations:
-            ret.append(e.getAsDict())
+            ret.append(e.getAsDict(["event", "status"]))
 
-        return ret
+        return {"invitations" : ret}
+
+    def getInvitationsForEvent(self, eventid, adminid):
+        #event objekt holen
+
+        #pruefen ob adminid admin ist
+
+        #Invitation.getAllForEvent()
+
+        return
 
     def getEventById(self, eventid):
         """
@@ -132,13 +141,15 @@ class Server():
         """
 
         event = Event.getById(eventid)
-        if not event.isAdmin(aid):
+        admin = User(id=aid)
+
+        if not event.authorized(admin):
             raise EventError(EventError.NO_ADMIN)
 
-        user = User.getById()
+        user = User.getById(uid)
 
         invitation = Invitation(user=user, event=event)
-        invitation.create() #TODO Methode zum Speichern der Einladung
+        invitation.create()
 
         return
 
@@ -171,11 +182,13 @@ class Server():
         :param status: neuer Status
         :return:  -
         """
+
         user = User.getById(userid)
         event = Event.getById(eventid)
 
         invitation = Invitation.getFromUserAndEvent(user, event)
 
+        status = int(status)
         if status == Invitation.YES:
             invitation.signin()
         elif status == Invitation.NO:

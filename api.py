@@ -53,8 +53,29 @@ def user_getAll():
 
 @app.route("/events/getInvitations")
 def events_getInvitations():
-    #TODO impl
-    return "works"
+    resp = JSONResponse()
+
+    try:
+        uid = str(request.args.get("uid"))
+
+        if uid is None:
+            raise EventError(EventError.ARGUMENT_ERROR)
+
+        server = Server()
+        data = server.getInvitations(uid)
+
+        resp.setSuccess(data)
+
+    except EventError as e:
+        resp.setError(str(e))
+
+    except Exception as e:
+        if DEBUG:
+            resp.setError(str(e))
+        else:
+            resp.setError(EventError.UNDEFINED)
+
+    return resp.getFinished()
 
 
 @app.route("/events/getById")
@@ -86,8 +107,31 @@ def events_getById():
 
 @app.route("/events/invite")
 def events_inivite():
-    #TODO impl
-    return "works"
+    resp = JSONResponse()
+
+    try:
+        eid = str(request.args.get("eid"))
+        uid = str(request.args.get("uid"))
+        aid = str(request.args.get("aid"))
+
+        if eid is None or uid is None or aid is None:
+            raise EventError(EventError.ARGUMENT_ERROR)
+
+        server = Server()
+        server.invite(eid, aid, uid)
+
+        resp.setSuccess()
+
+    except EventError as e:
+        resp.setError(str(e))
+
+    except Exception as e:
+        if DEBUG:
+            resp.setError(str(e))
+        else:
+            resp.setError(EventError.UNDEFINED)
+
+    return resp.getFinished()
 
 @app.route("/events/create")
 def events_create():
@@ -151,9 +195,31 @@ def events_delete():
 
 @app.route("/events/signin")
 def events_signin():
-    #TODO impl
-    return "works"
+    resp = JSONResponse()
 
+    try:
+        eid = str(request.args.get("eid"))
+        uid = str(request.args.get("uid"))
+        status = str(request.args.get("status"))
+
+        if eid is None or uid is None or status is None:
+            raise EventError(EventError.ARGUMENT_ERROR)
+
+        server = Server()
+        server.signin(eid, uid, status)
+
+        resp.setSuccess()
+
+    except EventError as e:
+        resp.setError(str(e))
+
+    except Exception as e:
+        if DEBUG:
+            resp.setError(str(e))
+        else:
+            resp.setError(EventError.UNDEFINED)
+
+    return resp.getFinished()
 
 @app.route("/user/register")
 def user_register():

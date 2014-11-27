@@ -100,7 +100,7 @@ class User:
             ret["vorname"] = self.vorname
 
         if "id" in attr:
-            ret["id"] = self.id
+            ret["id"] = str(self.id)
 
         return ret
 
