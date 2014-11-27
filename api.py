@@ -247,6 +247,32 @@ def user_register():
 
     return resp.getFinished()
 
+@app.route("/events/getAllInvitations")
+def events_getAllInvitations():
+    resp = JSONResponse()
+
+    try:
+        eid = str(request.args.get("eid"))
+
+        if eid is None:
+            raise EventError(EventError.ARGUMENT_ERROR)
+
+        server = Server()
+        data = server.getAllInvitations(eid)
+
+        resp.setSuccess(data)
+
+    except EventError as e:
+        resp.setError(str(e))
+
+    except Exception as e:
+        if DEBUG:
+            resp.setError(str(e))
+        else:
+            resp.setError(EventError.UNDEFINED)
+
+    return resp.getFinished()
+
 
 if __name__ == "__main__":
     app.run()

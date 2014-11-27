@@ -230,4 +230,42 @@
 		}
 	}
 
-2.10
+2.10 Anfrage aller Einladungen für ein Event (Status: nocht nicht fertig)
+    - URL http://server/events/getAllInvitations?eid=43
+
+    Antwort: (Array von Einladungen in der Data Sektion)
+
+    {
+		"result": {
+			"status":"success",
+			"message":""
+	    },
+
+		"data": {
+			"invitations": [
+				{
+				"user": {
+				    "id":"1234567",
+			        "name": "Breuersbrock",
+			        "vorname": "Henning",
+			        "mail": "test@test.de"
+				    }
+				"status": "0" / "1" / "2"  (0=nicht entschieden, 1=komme, 2=komme nicht)
+				},
+				{
+				"user": {
+				    "id":"1234567",
+			        "name": "Breuersbrock",
+			        "vorname": "Henning",
+			        "mail": "test@test.de"
+				    }
+				"status": "0" / "1" / "2"  (0=nicht entschieden, 1=komme, 2=komme nicht)
+				},
+				.
+				.
+				.
+
+			]
+		}
+	}
+

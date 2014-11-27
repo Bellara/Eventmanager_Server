@@ -199,7 +199,20 @@ class Server():
 
         return
 
+    def getAllInvitations(self, eid):
+        """
+        Methode zur Rueckgabe aller Einladungen fuer ein Event.
+        :param eid: ID des Events
+        :return: Hashtable mit einem Array Element fuer die Einladungen
+        """
+        ret = []
+        event = Event.getById(eid)
+        invitations = Invitation.getAllForEvent(event)
 
+        for e in invitations:
+            ret.append(e.getAsDict(["user", "status"]))
+
+        return {"invitations" : ret}
 
 
 

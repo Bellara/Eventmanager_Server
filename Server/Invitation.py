@@ -78,7 +78,7 @@ class Invitation:
         db = SQLConnection.getInstance()
 
         #SQL Befehl
-        db_ret = db.select("SELECT * FROM invitations WHERE event=%s", (event.id))
+        db_ret = db.select("SELECT * FROM invitations WHERE event=%s", (event.id,))
 
         #for schleife durch array
         for e in db_ret:
@@ -87,6 +87,7 @@ class Invitation:
             i.user = User.getById(e[1])
             i.event = Event.getById(e[2])
             i.status = int(e[3])
+            ret.append(i)
 
         return ret
 
