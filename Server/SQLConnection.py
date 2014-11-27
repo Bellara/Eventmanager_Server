@@ -60,7 +60,20 @@ class SQLConnection():
         c = self._getcursor()
         if c is None:
             raise EventError(EventError.DB_PROBLEMS)
-        pass
+
+        try:
+            c.execute(q, args)
+            self.dbconn.commit()
+            c.close()
+
+        except Exception as e:
+            c.close()
+            if DEBUG:
+                raise EventError(str(e))
+            else:
+                raise EventError(EventError.DB_DATA_PROBLEMS)
+
+        return
 
     def insert(self, q, args):
         c = self._getcursor()
@@ -75,7 +88,10 @@ class SQLConnection():
 
         except Exception as e:
             c.close()
-            raise EventError(str(e))
+            if DEBUG:
+                raise EventError(str(e))
+            else:
+                raise EventError(EventError.DB_DATA_PROBLEMS)
 
         return rid
 
@@ -88,9 +104,12 @@ class SQLConnection():
             c.execute(q, args)
             self.dbconn.commit()
             c.close()
-        except Exception:
+        except Exception as e:
             c.close()
-            raise EventError(EventError.DB_DATA_PROBLEMS)
+            if DEBUG:
+                raise EventError(str(e))
+            else:
+                raise EventError(EventError.DB_DATA_PROBLEMS)
 
     def count(self, q, args):
         c = self._getcursor()
