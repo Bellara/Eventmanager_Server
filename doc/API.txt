@@ -230,7 +230,7 @@
 		}
 	}
 
-2.10 Anfrage aller Einladungen für ein Event (Status: nocht nicht fertig)
+2.10 Anfrage aller Einladungen für ein Event (Status: fertig)
     - URL http://server/events/getAllInvitations?eid=43
 
     Antwort: (Array von Einladungen in der Data Sektion)
