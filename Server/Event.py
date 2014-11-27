@@ -93,7 +93,7 @@ class Event:
             attr = ["eid", "ort", "bezeichnung", "zeit", "admin"]
 
         if "eid" in attr:
-            ret["eid"] = self.id
+            ret["eid"] = str(self.id)
 
         if "ort" in attr:
             ret["ort"] = self.location

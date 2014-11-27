@@ -78,7 +78,7 @@
 		}
 	}
 
-2.3 Anfrage aller Einladungen auf die noch nicht geantwortet wurde. ()
+2.3 Anfrage aller Einladungen auf die noch nicht geantwortet wurde. (Status: nocht nicht fertig)
 	- URL: http://server/events/getInvitations?uid=123456
 
 	- Antwort: (In der "data" Sektion befindet sich ein Array aller Einladungen des Users)
@@ -125,7 +125,7 @@
 		}
 	}
 
-2.4 Anfrage Detail Informationen eines Events
+2.4 Anfrage Detail Informationen eines Events (Status: fertig)
 	- URL: http://server/events/getById?id=123456
 
 	- Antwort: (In der "data" Sektion steht ein Event Objekt)
