@@ -46,6 +46,7 @@ class Event:
         return event
 
     def invite(self, user):
+        #TODO nocht implementieren
         #Ist User schon eingeladen?
 
         #Invitation anlegen
@@ -109,7 +110,7 @@ class Event:
         return ret
 
     def getInvitationFromUser(self, u):
-        #Einladung pullen bei der eid = self.id und uid = self.uid
+        #TODO noch implementieren
         pass
 
     def authorized(self, user):

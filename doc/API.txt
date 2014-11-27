@@ -28,7 +28,7 @@
 
 2. Funktionen
 
-2.1 Login des Users
+2.1 Login des Users (Status: fertig)
 	- URL: http://server/user/login?mail=test@test.de&pw=blabla
 
 	- Antwort: (In der "data" Sektion befindet sicht ein User Objekt)
@@ -46,7 +46,7 @@
 		}
 	}
 
-2.2 Anfrage aller User
+2.2 Anfrage aller User (Status: fertig)
 	- URL: http://server/user/getAll
 
 	- Antwort: (In der "data" Sektion befindet sich ein Array aller Userobjekte)
@@ -78,7 +78,7 @@
 		}
 	}
 
-2.3 Anfrage aller Einladungen auf die noch nicht geantwortet wurde
+2.3 Anfrage aller Einladungen auf die noch nicht geantwortet wurde. ()
 	- URL: http://server/events/getInvitations?uid=123456
 
 	- Antwort: (In der "data" Sektion befindet sich ein Array aller Einladungen des Users)

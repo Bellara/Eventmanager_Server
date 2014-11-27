@@ -40,7 +40,7 @@ class Server():
         for e in users:
             ret.append(e.getAsDict())
 
-        return ret
+        return {"users" : ret}
 
     def getInvitations(self, userid):
         """
