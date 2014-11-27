@@ -149,7 +149,7 @@
 		}
 	}
 
-2.5 Einladen eines Benutzers zu einem Event
+2.5 Einladen eines Benutzers zu einem Event (Status: nocht nicht fertig)
 	- URL: http://server/events/invite?eid=1234&uid=1234&aid=12345
 
 	- Antwort: (Lediglich eine Benachrichtigung über Erfolg/Misserfolg)
@@ -162,7 +162,7 @@
 		"data":  { }
 	}
 
-2.6 Anlegen eines neuen Events
+2.6 Anlegen eines neuen Events (Status: noch nicht fertig)
 	- URL http://server/events/create?aid=548&time=YYYY-MM-DD_HH:MM&bz=Geb-Party&Ort=Bocholt
 
 	- Antwort: (Rückgabe des Event-Objekts)
@@ -186,7 +186,7 @@
 		}
 	}
 
-2.7 Loeschen eines Events
+2.7 Loeschen eines Events (Status: fertig)
 	- URL http://server/events/delete?aid=1515&eid=123123
 
 	- Antwort: (Lediglich eine Benachrichtigung über Erfolg/Misserfolg)
@@ -199,7 +199,7 @@
 		"data":  { }
 	}
 
-2.8 Für ein Event anmelden oder absagen
+2.8 Für ein Event anmelden oder absagen (Status: noch nicht fertig)
 	- URL http://server/events/signin?eid=123123&uid=12123&status=1/2
 
 	- Antwort: (Lediglich eine Benachrichtigung über Erfolg/Misserfolg)
@@ -212,7 +212,7 @@
 		"data":  { }
 	}
 
-2.9 Registrieren
+2.9 Registrieren (Status fertig)
 	- URL http://server/user/register?mail=sdfsf&name=sdfskdf&vorname=wesddf&passwort=65654
 
 	Antwort: (User Objekt in der "data" Sektion)
