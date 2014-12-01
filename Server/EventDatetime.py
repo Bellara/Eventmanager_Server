@@ -12,6 +12,7 @@ class EventDatetime():
 
     def fromString(self, s):
         try:
+            s = s.replace("_", " ")
             self.d = dt.datetime.strptime(s, EventDatetime.DATETIME_STRFORMAT)
         except:
             raise EventError(EventError.WRONG_DATE_FORMAT)

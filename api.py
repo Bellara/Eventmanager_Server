@@ -140,7 +140,6 @@ def events_create():
     try:
         admin_id = str(request.args.get("aid"))
         time = str(request.args.get("time"))
-        time = time.replace("_", " ")
         bz = str(request.args.get("bz"))
         location = str(request.args.get("Ort"))
 
