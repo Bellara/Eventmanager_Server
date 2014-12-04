@@ -1,6 +1,7 @@
 __author__ = 'Henning'
 
-from hashids import Hashids
+from utils.hashids import Hashids
+from EventError import EventError
 
 class EventId:
     """
@@ -17,7 +18,10 @@ class EventId:
 
     def setHashed(self, h):
         hasher = Hashids()
-        self.id = hasher.decrypt(h)[0]
+        try:
+            self.id = hasher.decrypt(h)[0]
+        except:
+            raise EventError(EventError.INVALID_ID)
 
     def getUnhashed(self):
         return self.id

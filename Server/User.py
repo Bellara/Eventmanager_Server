@@ -3,6 +3,7 @@ __author__ = 'Henning'
 from Password import Password
 from SQLConnection import SQLConnection
 from EventError import EventError
+from EventId import EventId
 
 
 class User:
@@ -27,7 +28,8 @@ class User:
 
         for e in db_content:
             user = User()
-            user.id = str(e[0])
+            user.id = EventId()
+            user.id.setUnhashed(int(e[0]))
             user.setMail(str(e[1]))
             pw = Password(h=str(e[2]))
             user.pw = pw
@@ -56,7 +58,7 @@ class User:
         else:
             db_content = db_content[0]
             user = User()
-            user.id = str(db_content[0])
+            user.id.setUnhashed(int(db_content[0]))
             user.setMail(str(db_content[1]))
             pw = Password(h=str(db_content[2]))
             user.pw = pw
@@ -81,7 +83,8 @@ class User:
                                                                                           self.pw.getHash(),
                                                                                           self.name,
                                                                                           self.vorname))
-            self.id = id
+            self.id = EventId()
+            self.id.setUnhashed(id)
         return
 
     def getAsDict(self, attr=[]):
@@ -100,7 +103,7 @@ class User:
             ret["vorname"] = self.vorname
 
         if "id" in attr:
-            ret["id"] = str(self.id)
+            ret["id"] = str(self.id.getHashed())
 
         return ret
 
@@ -108,7 +111,7 @@ class User:
     def getById(uid):
         #User Objekt anhand der ID bekommen
         db = SQLConnection.getInstance()
-        db_content = db.select("SELECT * FROM user WHERE id=%s", (uid,))
+        db_content = db.select("SELECT * FROM user WHERE id=%s", (uid.getUnhashed(),))
 
         if len(db_content) is 0:
             raise EventError(EventError.NO_USER_FOUND)
@@ -119,13 +122,14 @@ class User:
         else:
             db_content = db_content[0]
             user = User()
-            user.id = str(db_content[0])
+            user.id = EventId()
+            user.id.setUnhashed(int(db_content[0]))
+
             user.setMail(str(db_content[1]))
             pw = Password(h=str(db_content[2]))
             user.pw = pw
             user.setName(str(db_content[3]))
             user.setVorname(str(db_content[4]))
-
             return user
 
     def setMail(self, mail):

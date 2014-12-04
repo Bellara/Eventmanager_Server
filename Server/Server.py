@@ -5,6 +5,7 @@ from Event import Event
 from Invitation import Invitation
 from EventError import EventError
 from EventDatetime import EventDatetime
+from EventId import EventId
 
 
 class Server():
@@ -53,22 +54,16 @@ class Server():
 
         ret = []
 
-        user = User.getById(userid)
+        u_id = EventId()
+        u_id.setHashed(userid)
+        user = User.getById(u_id)
         invitations = Invitation.getAllFromUser(user)
 
         for e in invitations:
             ret.append(e.getAsDict(["event", "status"]))
 
-        return {"invitations" : ret}
+        return {"invitations": ret}
 
-    def getInvitationsForEvent(self, eventid, adminid):
-        #event objekt holen
-
-        #pruefen ob adminid admin ist
-
-        #Invitation.getAllForEvent()
-
-        return
 
     def getEventById(self, eventid):
         """
@@ -80,7 +75,9 @@ class Server():
         Dictionaries
         """
 
-        event = Event.getById(eventid)
+        e_id = EventId()
+        e_id.setHashed(eventid)
+        event = Event.getById(e_id)
         return event.getAsDict()
 
     def createEvent(self, aid, time, bz, location):
@@ -96,7 +93,9 @@ class Server():
 
         event = Event()
 
-        admin = User.getById(aid)
+        a_id = EventId()
+        a_id.setHashed(aid)
+        admin = User.getById(a_id)
         event.admin = admin
 
         date = EventDatetime()
@@ -120,8 +119,9 @@ class Server():
         :param aid: ID des Admins des Events um nur dem Admin zu erlauben sein Event zu loeschen.
         :return: -
         """
-
-        event = Event.getById(eventid)
+        e_id = EventId()
+        e_id.setHashed(eventid)
+        event = Event.getById(e_id)
         user = User(id=aid)
         if not event.authorized(user):
             raise EventError(EventError.USER_NOT_AUTHORIZED)
@@ -140,13 +140,22 @@ class Server():
         :return: -
         """
 
-        event = Event.getById(eventid)
-        admin = User(id=aid)
+        u_id = EventId()
+        u_id.setHashed(u_id)
+
+        a_id = EventId()
+        a_id.setHashed(a_id)
+
+        e_id = EventId()
+        e_id.setHashed(eventid)
+
+        event = Event.getById(e_id)
+        admin = User(id=a_id)
 
         if not event.authorized(admin):
             raise EventError(EventError.NO_ADMIN)
 
-        user = User.getById(uid)
+        user = User.getById(u_id)
 
         invitation = Invitation(user=user, event=event)
         invitation.create()
@@ -183,8 +192,14 @@ class Server():
         :return:  -
         """
 
-        user = User.getById(userid)
-        event = Event.getById(eventid)
+        u_id = EventId()
+        u_id.setHashed(u_id)
+
+        e_id = EventId()
+        e_id.setHashed(eventid)
+
+        user = User.getById(u_id)
+        event = Event.getById(e_id)
 
         invitation = Invitation.getFromUserAndEvent(user, event)
 
@@ -205,8 +220,13 @@ class Server():
         :param eid: ID des Events
         :return: Hashtable mit einem Array Element fuer die Einladungen
         """
+
+
+        e_id = EventId()
+        e_id.setHashed(eid)
+
         ret = []
-        event = Event.getById(eid)
+        event = Event.getById(e_id)
         invitations = Invitation.getAllForEvent(event)
 
         for e in invitations:

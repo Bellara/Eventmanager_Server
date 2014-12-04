@@ -15,4 +15,5 @@ class EventError(Exception):
     NO_EVENT_FOUND = "Kein Event gefunden!"
     WRONG_DATE_FORMAT = "Falsches Format beim Datum gefunden!"
     USER_NOT_AUTHORIZED = "Der Benutzer ist nicht autorisiert, diese Aktion auszufuehren"
+    INVALID_ID = "Ungueltige ID!"
     pass

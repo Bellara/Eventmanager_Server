@@ -4,6 +4,7 @@ from SQLConnection import SQLConnection
 from EventError import EventError
 from EventDatetime import EventDatetime
 from User import User
+from EventId import EventId
 
 class Event:
 
@@ -27,32 +28,26 @@ class Event:
         event = Event()
         db = SQLConnection.getInstance()
 
-        db_content = db.select("SELECT * FROM events WHERE id=%s", (id,))
+        db_content = db.select("SELECT * FROM events WHERE id=%s", (id.getUnhashed(),))
 
         if len(db_content) < 1:
             raise EventError(EventError.NO_EVENT_FOUND)
 
         db_event = db_content[0]
 
-        event.id = db_event[0]
+        event.id = EventId()
+        event.id.setUnhashed(int(db_event[0]))
         event.location = db_event[1]
         event.datetime = EventDatetime(db_event[2])
 
-        admin = User.getById(str(db_event[3]))
+        admin_id = EventId()
+        admin_id.setUnhashed(int(db_event[3]))
+        admin = User.getById(admin_id)
 
         event.admin = admin
         event.description = db_event[4]
 
         return event
-
-    def invite(self, user):
-        #TODO nocht implementieren
-        #Ist User schon eingeladen?
-
-        #Invitation anlegen
-
-        #Invitation speichern
-        pass
 
     def create(self):
         #aktuelle Parameter pruefen
@@ -68,9 +63,10 @@ class Event:
         db = SQLConnection.getInstance()
 
         id = db.insert("INSERT INTO events (location, time, admin, description) VALUES (%s,%s,%s,%s)",
-            (self.location, str(self.datetime), self.admin.id, self.description))
+            (self.location, str(self.datetime), self.admin.id.getUnhashed(), self.description))
 
-        self.id = id
+        self.id = EventId()
+        self.id.setUnhashed(int(id))
 
         return
 
@@ -81,7 +77,7 @@ class Event:
 
 
         db = SQLConnection.getInstance()
-        db.delete("DELETE FROM events WHERE id=%s", (self.id,))
+        db.delete("DELETE FROM events WHERE id=%s", (self.id.getUnhashed(),))
 
         #TODO Zusaetzlich noch alle Einladungen fuer dieses Element anfragen und loeschen...
         return
@@ -93,7 +89,7 @@ class Event:
             attr = ["eid", "ort", "bezeichnung", "zeit", "admin"]
 
         if "eid" in attr:
-            ret["eid"] = str(self.id)
+            ret["eid"] = str(self.id.getHashed())
 
         if "ort" in attr:
             ret["ort"] = self.location
@@ -109,9 +105,6 @@ class Event:
 
         return ret
 
-    def getInvitationFromUser(self, u):
-        #TODO noch implementieren
-        pass
 
     def authorized(self, user):
         """
@@ -121,4 +114,4 @@ class Event:
         :return: True: User(aid) ist Admin. False: User(aid) ist kein Admin
         """
 
-        return self.admin.id == user.id
+        return self.admin.id.getUnhashed() == user.id.getUnhashed()

@@ -4,6 +4,8 @@ from User import User
 from Event import Event
 from EventError import EventError
 from SQLConnection import SQLConnection
+from EventId import EventId
+
 
 class Invitation:
 
@@ -24,7 +26,7 @@ class Invitation:
 
 
     def signin(self):
-        if type(self.id) is not int or \
+        if not isinstance(self.id, EventId()) or \
             not isinstance(self.event, Event) or \
             not isinstance(self.user, User):
             raise EventError(EventError.UNDEFINED)
@@ -32,13 +34,13 @@ class Invitation:
         #status auf Invitation.NO setzen
         db = SQLConnection.getInstance()
         db.update("UPDATE invitations SET status=%s WHERE id=%s",
-            (Invitation.YES, self.id))
+            (Invitation.YES, self.id.getUnhashed()))
 
         return
 
     def notcoming(self):
         #alle parameter pruefen
-        if type(self.id) is not int or \
+        if not isinstance(self.id, EventId) or \
             not isinstance(self.event, Event) or \
             not isinstance(self.user, User):
             raise EventError(EventError.UNDEFINED)
@@ -46,7 +48,7 @@ class Invitation:
         #status auf Invitation.NO setzen
         db = SQLConnection.getInstance()
         db.update("UPDATE invitations SET status=%s WHERE id=%s",
-            (Invitation.NO, self.id))
+            (Invitation.NO, self.id.getUnhashed()))
 
         return
 
@@ -62,11 +64,12 @@ class Invitation:
         db = SQLConnection.getInstance()
 
         id = db.insert("INSERT INTO invitations (user, event, status) VALUES (%s, %s, %s)", \
-                       (self.user.id,
-                       self.event.id,
+                       (self.user.id.getUnhashed(),
+                       self.event.id.getUnhashed(),
                        self.status))
 
-        self.id = id
+        self.id = EventId()
+        self.id.setUnhashed(id)
 
         return
 
@@ -78,14 +81,17 @@ class Invitation:
         db = SQLConnection.getInstance()
 
         #SQL Befehl
-        db_ret = db.select("SELECT * FROM invitations WHERE event=%s", (event.id,))
+        db_ret = db.select("SELECT * FROM invitations WHERE event=%s", (event.id.getUnhashed(),))
 
         #for schleife durch array
         for e in db_ret:
             i = Invitation()
-            i.id = e[0]
-            i.user = User.getById(e[1])
-            i.event = Event.getById(e[2])
+            i.id = EventId()
+            i.id.setUnhashed(int(e[0]))
+            u_id = EventId()
+            u_id.setUnhashed(int(e[1]))
+            i.user = User.getById(u_id)
+            i.event = event
             i.status = int(e[3])
             ret.append(i)
 
@@ -99,14 +105,19 @@ class Invitation:
         db = SQLConnection.getInstance()
 
         #SQL Befehl
-        db_ret = db.select("SELECT * FROM invitations WHERE user=%s", (user.id,))
+        db_ret = db.select("SELECT * FROM invitations WHERE user=%s", (user.id.getUnhashed(),))
+
 
         #for schleife durch array
         for e in db_ret:
             i = Invitation()
+            i.id = EventId()
+            i.id.setUnhashed(int(e[0]))
             i.id = e[0]
-            i.user = User.getById(e[1])
-            i.event = Event.getById(e[2])
+            i.user = user
+            e_id = EventId()
+            e_id.setUnhashed(int(e[2]))
+            i.event = Event.getById(e_id)
             i.status = int(e[3])
             ret.append(i)
 
@@ -119,7 +130,7 @@ class Invitation:
             attr=["event", "status", "user", "id"]
 
         if "id" in attr:
-            ret["id"] = str(self.id)
+            ret["id"] = str(self.id.getHashed())
         if "status" in attr:
             ret["status"] = str(self.status)
         if "user" in attr:
@@ -137,14 +148,15 @@ class Invitation:
         db = SQLConnection.getInstance()
 
         db_ret = db.select("SELECT * FROM invitations WHERE user=%s AND event=%s",
-                           (user.id, event.id))
+                           (user.id.getUnhashed(), event.id.getUnhashed()))
 
         if len(db_ret) is not 1:
             raise EventError(EventError.UNDEFINED)
 
         db_ret = db_ret[0]
 
-        ret.id = db_ret[0]
+        ret.id = EventId()
+        ret.id.setUnhashed(db_ret[0])
         ret.user = User.getById(db_ret[1])
         ret.event = Event.getById(db_ret[2])
         ret.status = int(db_ret[3])
