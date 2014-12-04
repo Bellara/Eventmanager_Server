@@ -6,6 +6,7 @@ from globals import DEBUG
 from JSONResponse import JSONResponse
 from Server.Server import Server
 from Server.EventError import EventError
+from Server.SQLConnection import SQLConnection
 
 app = Flask(__name__)
 
@@ -50,7 +51,6 @@ def user_getAll():
 
     return resp.getFinished()
 
-
 @app.route("/events/getInvitations")
 def events_getInvitations():
     resp = JSONResponse()
@@ -74,6 +74,7 @@ def events_getInvitations():
             resp.setError(str(e))
         else:
             resp.setError(EventError.UNDEFINED)
+
 
     return resp.getFinished()
 
@@ -101,6 +102,7 @@ def events_getById():
             resp.setError(str(e))
         else:
             resp.setError(EventError.UNDEFINED)
+
 
     return resp.getFinished()
 
@@ -130,6 +132,7 @@ def events_inivite():
             resp.setError(str(e))
         else:
             resp.setError(EventError.UNDEFINED)
+
 
     return resp.getFinished()
 

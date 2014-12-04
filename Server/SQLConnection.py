@@ -29,7 +29,6 @@ class SQLConnection():
                                                   password=self.dbpw,
                                                   database=self.dbname
                                                   )
-            mysql.connector.connect()
         except Exception as e:
             if DEBUG:
                 raise EventError(str(e))
@@ -135,8 +134,12 @@ class SQLConnection():
         if self.dbconn != None:
             try:
                 return self.dbconn.cursor()
-            except:
+            except Exception as e:
                 return None
+
+    def close(self):
+        if self.dbconn.is_connected():
+            self.dbconn.close()
 
     @staticmethod
     def getInstance():
