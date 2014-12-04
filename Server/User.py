@@ -58,6 +58,7 @@ class User:
         else:
             db_content = db_content[0]
             user = User()
+            user.id = EventId()
             user.id.setUnhashed(int(db_content[0]))
             user.setMail(str(db_content[1]))
             pw = Password(h=str(db_content[2]))
