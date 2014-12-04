@@ -6,7 +6,6 @@ from globals import DEBUG
 from JSONResponse import JSONResponse
 from Server.Server import Server
 from Server.EventError import EventError
-from Server.SQLConnection import SQLConnection
 
 app = Flask(__name__)
 
