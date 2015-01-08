@@ -30,7 +30,7 @@ class User:
             user = User()
             user.id = EventId()
             user.id.setUnhashed(int(e[0]))
-            user.setMail(str(e[1]))
+            user.mail = EventMail(str(e[1]))
             pw = Password(h=str(e[2]))
             user.pw = pw
             user.setName(str(e[3]))
