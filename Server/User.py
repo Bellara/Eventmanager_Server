@@ -4,13 +4,13 @@ from Password import Password
 from SQLConnection import SQLConnection
 from EventError import EventError
 from EventId import EventId
-
+from EventMail import EventMail
 
 class User:
 
     def __init__(self, id=None, mail=None, name=None, vorname=None, pw=None):
         self.id = id
-        self.mail = mail
+        self.mail = EventMail(mail)
         self.name = name
         self.vorname = vorname
         if pw != None:
@@ -95,7 +95,7 @@ class User:
             attr = ["mail", "vorname", "name", "id"]
 
         if "mail" in attr:
-            ret["mail"] = self.mail
+            ret["mail"] = str(self.mail)
 
         if "name" in attr:
             ret["name"] = self.name
@@ -140,11 +140,12 @@ class User:
         :param mail: Mail Adresse
         :return: <void>
         """
-        parts = mail.split("@")
+        email = EventMail(mail)
 
-        if len(parts) != 2:
-            raise EventError(EventError.INVALID_MAIL)
-        self.mail = mail
+        if email.check() is False:
+            raise EventError.INVALID_MAIL
+
+        self.mail = email
 
         return
 
