@@ -26,7 +26,7 @@ class Invitation:
 
 
     def signin(self):
-        if not isinstance(self.id, EventId()) or \
+        if not isinstance(self.id, EventId) or \
             not isinstance(self.event, Event) or \
             not isinstance(self.user, User):
             raise EventError(EventError.UNDEFINED)
@@ -157,8 +157,12 @@ class Invitation:
 
         ret.id = EventId()
         ret.id.setUnhashed(db_ret[0])
-        ret.user = User.getById(db_ret[1])
-        ret.event = Event.getById(db_ret[2])
+        uid = EventId()
+        uid.setUnhashed(db_ret[1])
+        ret.user = User.getById(uid)
+        eid = EventId()
+        eid.setUnhashed(db_ret[2])
+        ret.event = Event.getById(eid)
         ret.status = int(db_ret[3])
 
         return ret

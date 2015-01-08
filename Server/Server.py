@@ -141,10 +141,10 @@ class Server():
         """
 
         u_id = EventId()
-        u_id.setHashed(u_id)
+        u_id.setHashed(uid)
 
         a_id = EventId()
-        a_id.setHashed(a_id)
+        a_id.setHashed(aid)
 
         e_id = EventId()
         e_id.setHashed(eventid)
@@ -193,7 +193,7 @@ class Server():
         """
 
         u_id = EventId()
-        u_id.setHashed(u_id)
+        u_id.setHashed(userid)
 
         e_id = EventId()
         e_id.setHashed(eventid)
