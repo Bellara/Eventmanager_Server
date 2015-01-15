@@ -14,7 +14,7 @@ werden, werden von einer MySQL-Datenbank abgerufen. Der Server der zu
 Testzwecken aufgesetzt wurde, basiert hierbei auf einem Linux (Ubuntu)
 Betriebssystem, welches innerhalb einer virtuellen Maschine betrieben wird.
 Der Server der tatsälich von den Clients angesprochen wird
-(http://eventmanager.pythonanywhere.com), wird allerdings
+(http://eventmanager.pythonanywhere.com/<kommando>), wird allerdings
 im Rechenzentrum des Anbieters Pythonanywhere gehostet.
 
 Organisation des Source Code
