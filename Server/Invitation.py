@@ -29,7 +29,7 @@ class Invitation:
         if not isinstance(self.id, EventId) or \
             not isinstance(self.event, Event) or \
             not isinstance(self.user, User):
-            raise EventError(EventError.UNDEFINED)
+            raise EventError("sdasd")
 
         #status auf Invitation.NO setzen
         db = SQLConnection.getInstance()
@@ -43,7 +43,7 @@ class Invitation:
         if not isinstance(self.id, EventId) or \
             not isinstance(self.event, Event) or \
             not isinstance(self.user, User):
-            raise EventError(EventError.UNDEFINED)
+            raise EventError("sdfsdf")
 
         #status auf Invitation.NO setzen
         db = SQLConnection.getInstance()
@@ -62,6 +62,9 @@ class Invitation:
             raise EventError(EventError.UNDEFINED)
 
         db = SQLConnection.getInstance()
+
+        if Invitation.fromUserAndEvent(self.user, self.event) is not None:
+            raise EventError("Einladung bereits vorhanden.")
 
         id = db.insert("INSERT INTO invitations (user, event, status) VALUES (%s, %s, %s)", \
                        (self.user.id.getUnhashed(),
@@ -150,8 +153,11 @@ class Invitation:
         db_ret = db.select("SELECT * FROM invitations WHERE user=%s AND event=%s",
                            (user.id.getUnhashed(), event.id.getUnhashed()))
 
-        if len(db_ret) is not 1:
+        if len(db_ret) > 1:
             raise EventError(EventError.UNDEFINED)
+
+        if len(db_ret) == 0:
+            return None
 
         db_ret = db_ret[0]
 

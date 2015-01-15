@@ -203,6 +203,9 @@ class Server():
 
         invitation = Invitation.getFromUserAndEvent(user, event)
 
+        if invitation is None:
+            raise EventError("Keine Einladung vorhanden.")
+
         status = int(status)
         if status == Invitation.YES:
             invitation.signin()
